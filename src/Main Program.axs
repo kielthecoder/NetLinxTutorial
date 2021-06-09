@@ -5,6 +5,8 @@ PROGRAM_NAME='Main Program'
 (***********************************************************)
 DEFINE_DEVICE
 
+dvCONSOLE = 0:1:0	// Master Controller
+
 dvIO = 5001:17:0	// GPIO
 
 (***********************************************************)
@@ -44,4 +46,9 @@ TIMELINE_EVENT[TL_LOOP]
     [dvIO,6] = (TIMELINE.SEQUENCE == 6)
     [dvIO,7] = (TIMELINE.SEQUENCE == 7)
     [dvIO,8] = (TIMELINE.SEQUENCE == 8)
+    
+    IF (TIMELINE.SEQUENCE == 8)
+    {
+	SEND_STRING dvCONSOLE, 'One more time!'
+    }
 }
