@@ -7,7 +7,16 @@ DEFINE_DEVICE
 
 dvCONSOLE = 0:1:0	// Master Controller
 
-dvIO = 5001:17:0	// GPIO
+dvCOM1 = 5001:1:0	// RS-232 port 1
+dvCOM2 = 5001:2:0	// RS-232 port 2
+
+dvIR1 = 5001:9:0	// IR port 1
+dvIR2 = 5001:10:0	// IR port 2
+
+dvRELAY = 5001:8:0	// Relays
+dvIO    = 5001:17:0	// GPIO
+
+dvTP1 = 10001:1:0	// NXT-1200
 
 (***********************************************************)
 (*               CONSTANT DEFINITIONS GO BELOW             *)
@@ -35,6 +44,14 @@ TIMELINE_CREATE(TL_LOOP, lLoopTimes, LENGTH_ARRAY(lLoopTimes),
 (*                  THE EVENTS GO BELOW                    *)
 (***********************************************************)
 DEFINE_EVENT
+
+DATA_EVENT[dvTP1]
+{
+    ONLINE:
+    {
+	SEND_COMMAND dvTP1, 'ADBEEP'
+    }
+}
 
 TIMELINE_EVENT[TL_LOOP]
 {
