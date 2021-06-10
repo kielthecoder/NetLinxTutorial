@@ -53,6 +53,28 @@ DATA_EVENT[dvTP1]
     }
 }
 
+BUTTON_EVENT[dvTP1,1] // Touch to Start System
+{
+    PUSH:
+    {
+	TO[BUTTON.INPUT]
+	
+	SEND_COMMAND dvTP1,'^PPK-Start System'
+	SEND_COMMAND dvTP1,'^PPN-Source Selection'
+    }
+}
+
+BUTTON_EVENT[dvTP1,2] // Power Off
+{
+    PUSH:
+    {
+	TO[BUTTON.INPUT]
+	
+	SEND_COMMAND dvTP1,'^PPK-Source Selection'
+	SEND_COMMAND dvTP1,'^PPN-Start System'
+    }
+}
+
 TIMELINE_EVENT[TL_LOOP]
 {
     [dvIO,1] = (TIMELINE.SEQUENCE == 1)
