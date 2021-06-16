@@ -125,7 +125,7 @@
 <SysID>0</SysID>
 <TransTCPIP>0.0.0.0</TransTCPIP>
 <TransSerial>COM1,115200,8,None,1,None</TransSerial>
-<TransTCPIPEx>172.22.192.9|1319|1|NI-2100 [NI2100-KIEL]||</TransTCPIPEx>
+<TransTCPIPEx>192.168.1.20|1319|1|Home NI-3100||</TransTCPIPEx>
 <TransSerialEx>COM1|38400|8|None|1|None||</TransSerialEx>
 <TransUSBEx>|||||</TransUSBEx>
 <TransVNMEx>10.0.0.1|1|&lt;Default&gt;</TransVNMEx>
