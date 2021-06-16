@@ -18,6 +18,8 @@ dvIO    = 5001:17:0	// GPIO
 
 dvTP1 = 10001:1:0	// NXT-1200
 
+vdvROOM = 33001:1:0
+
 (***********************************************************)
 (*               CONSTANT DEFINITIONS GO BELOW             *)
 (***********************************************************)
@@ -31,6 +33,8 @@ TL_LOOP = 1
 DEFINE_VARIABLE
 
 LONG lLoopTimes[] = { 500, 500, 500, 500, 500, 500, 500, 500 }
+
+INTEGER btnSystemPower[] = { 1, 2 }
 
 (***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
@@ -53,41 +57,34 @@ DATA_EVENT[dvTP1]
     }
 }
 
-BUTTON_EVENT[dvTP1,1] // Touch to Start System
+BUTTON_EVENT[dvTP1, btnSystemPower]
 {
     PUSH:
     {
 	TO[BUTTON.INPUT]
 	
-	SEND_COMMAND dvTP1,'^PPK-Start System'
-	SEND_COMMAND dvTP1,'^PPN-Source Selection'
+	[vdvROOM,255] = (GET_LAST(btnSystemPower) == 1)
     }
 }
 
-BUTTON_EVENT[dvTP1,2] // Power Off
+CHANNEL_EVENT[vdvROOM,255]
 {
-    PUSH:
+    ON:
     {
-	TO[BUTTON.INPUT]
-	
+	SEND_COMMAND dvTP1,'^PPK-Start System'
+	SEND_COMMAND dvTP1,'^PPN-Source Selection'
+    }
+    OFF:
+    {
 	SEND_COMMAND dvTP1,'^PPK-Source Selection'
 	SEND_COMMAND dvTP1,'^PPN-Start System'
     }
 }
 
-TIMELINE_EVENT[TL_LOOP]
+CHANNEL_EVENT[dvIO,1]	// Fire Alarm
 {
-    [dvIO,1] = (TIMELINE.SEQUENCE == 1)
-    [dvIO,2] = (TIMELINE.SEQUENCE == 2)
-    [dvIO,3] = (TIMELINE.SEQUENCE == 3)
-    [dvIO,4] = (TIMELINE.SEQUENCE == 4)
-    [dvIO,5] = (TIMELINE.SEQUENCE == 5)
-    [dvIO,6] = (TIMELINE.SEQUENCE == 6)
-    [dvIO,7] = (TIMELINE.SEQUENCE == 7)
-    [dvIO,8] = (TIMELINE.SEQUENCE == 8)
-    
-    IF (TIMELINE.SEQUENCE == 8)
+    OFF:
     {
-	SEND_STRING dvCONSOLE, 'One more time!'
+	OFF[vdvROOM,255]
     }
 }
