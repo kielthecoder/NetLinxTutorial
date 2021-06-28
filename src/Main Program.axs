@@ -71,13 +71,13 @@ CHANNEL_EVENT[vdvROOM,255]
 {
     ON:
     {
-	SEND_COMMAND dvTP1,'^PPK-Start System'
-	SEND_COMMAND dvTP1,'^PPN-Source Selection'
+	SEND_COMMAND dvTP1,'@PPK-Start System'
+	SEND_COMMAND dvTP1,'@PPN-Source Selection'
     }
     OFF:
     {
-	SEND_COMMAND dvTP1,'^PPK-Source Selection'
-	SEND_COMMAND dvTP1,'^PPN-Start System'
+	SEND_COMMAND dvTP1,'@PPK-Source Selection'
+	SEND_COMMAND dvTP1,'@PPN-Start System'
     }
 }
 
