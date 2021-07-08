@@ -16,7 +16,8 @@ dvIR2 = 5001:10:0	// IR port 2
 dvRELAY = 5001:8:0	// Relays
 dvIO    = 5001:17:0	// GPIO
 
-dvTP1 = 10001:1:0	// NXT-1200
+dvTP1     = 10001:1:0	// MXP-9000i
+dvTP1_SWT = 10001:2:0	//   Switcher controls
 
 vdvROOM = 33001:1:0
 
@@ -35,6 +36,7 @@ DEFINE_VARIABLE
 LONG lLoopTimes[] = { 500, 500, 500, 500, 500, 500, 500, 500 }
 
 INTEGER btnSystemPower[] = { 1, 2 }
+INTEGER btnSources[] = { 1, 2, 3, 4, 5, 6, 7, 8 }
 
 (***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
@@ -57,13 +59,37 @@ DATA_EVENT[dvTP1]
     }
 }
 
-BUTTON_EVENT[dvTP1, btnSystemPower]
+BUTTON_EVENT[dvTP1,btnSystemPower]
 {
     PUSH:
     {
 	TO[BUTTON.INPUT]
 	
 	[vdvROOM,255] = (GET_LAST(btnSystemPower) == 1)
+    }
+}
+
+BUTTON_EVENT[dvTP1_SWT,btnSources]
+{
+    PUSH:
+    {
+	INTEGER i, n
+	
+	n = GET_LAST(btnSources)
+	
+	FOR (i = 1; i <= 8; i++)
+	{
+	    [dvTP1_SWT,i] = (i == n)
+	}
+	
+	IF (n == 5) // AppleTV input
+	{
+	    SEND_COMMAND dvTP1,'^SHO-3,1'
+	}
+	ELSE
+	{
+	    SEND_COMMAND dvTP1,'^SHO-3,0'
+	}
     }
 }
 
