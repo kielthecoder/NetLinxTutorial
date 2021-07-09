@@ -17,7 +17,7 @@ dvRELAY = 5001:8:0	// Relays
 dvIO    = 5001:17:0	// GPIO
 
 dvTP1     = 10001:1:0	// MXP-9000i
-dvTP1_SWT = 10001:2:0	//   Switcher controls
+dvTP1_SWT = 10001:2:0	// Switcher controls
 
 vdvROOM = 33001:1:0
 
@@ -36,7 +36,7 @@ DEFINE_VARIABLE
 LONG lLoopTimes[] = { 500, 500, 500, 500, 500, 500, 500, 500 }
 
 INTEGER btnSystemPower[] = { 1, 2 }
-INTEGER btnSources[] = { 1, 2, 3, 4, 5, 6, 7, 8 }
+INTEGER btnSources[]     = { 1, 2, 3, 4, 5, 6, 7, 8 }
 
 (***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
@@ -55,7 +55,7 @@ DATA_EVENT[dvTP1]
 {
     ONLINE:
     {
-	SEND_COMMAND dvTP1, 'ADBEEP'
+	SEND_COMMAND dvTP1,'ADBEEP'
     }
 }
 
@@ -66,6 +66,16 @@ BUTTON_EVENT[dvTP1,btnSystemPower]
 	TO[BUTTON.INPUT]
 	
 	[vdvROOM,255] = (GET_LAST(btnSystemPower) == 1)
+    }
+}
+
+BUTTON_EVENT[dvTP1,3]	// Toggle AppleTV popup
+{
+    PUSH:
+    {
+	TO[BUTTON.INPUT]
+	
+	SEND_COMMAND dvTP1,'PPOG-AppleTV'
     }
 }
 
