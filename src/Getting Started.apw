@@ -136,6 +136,12 @@
 <UserName></UserName>
 <Password></Password>
 <Comments></Comments>
+<File CompileType="Netlinx" Type="IR"><Identifier>AppleTV_AMXLiving</Identifier>
+<FilePathName>..\assets\AppleTV_AMXLiving.IRL</FilePathName>
+<Comments></Comments>
+<DeviceMap DevAddr="dvIR1"><DevName>dvIR1</DevName>
+</DeviceMap>
+</File>
 <File CompileType="Netlinx" Type="MasterSrc"><Identifier>Main Program</Identifier>
 <FilePathName>Main Program.axs</FilePathName>
 <Comments></Comments>
