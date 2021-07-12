@@ -16,8 +16,9 @@ dvIR2 = 5001:10:0	// IR port 2
 dvRELAY = 5001:8:0	// Relays
 dvIO    = 5001:17:0	// GPIO
 
-dvTP1     = 10001:1:0	// MXP-9000i
-dvTP1_SWT = 10001:2:0	// Switcher controls
+dvTP1       = 10001:1:0	 // MXP-9000i
+dvTP1_SWT   = 10001:2:0	 // Switcher controls
+dvTP1_TPORT = 10001:3:0	 // Transport controls
 
 vdvROOM = 33001:1:0
 
@@ -29,6 +30,12 @@ DEFINE_CONSTANT
 TL_LOOP = 1
 
 (***********************************************************)
+(*                  INCLUDE FILES GO BELOW                 *)
+(***********************************************************)
+
+#INCLUDE 'SNAPI'
+
+(***********************************************************)
 (*               VARIABLE DEFINITIONS GO BELOW             *)
 (***********************************************************)
 DEFINE_VARIABLE
@@ -37,6 +44,16 @@ LONG lLoopTimes[] = { 500, 500, 500, 500, 500, 500, 500, 500 }
 
 INTEGER btnSystemPower[] = { 1, 2 }
 INTEGER btnSources[]     = { 1, 2, 3, 4, 5, 6, 7, 8 }
+
+INTEGER btnAppleTV[] = {
+	PLAY,
+	MENU_FUNC,
+	MENU_UP,
+	MENU_DN,
+	MENU_LT,
+	MENU_RT,
+	MENU_SELECT
+    }
 
 (***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
@@ -65,7 +82,7 @@ BUTTON_EVENT[dvTP1,btnSystemPower]
     {
 	TO[BUTTON.INPUT]
 	
-	[vdvROOM,255] = (GET_LAST(btnSystemPower) == 1)
+	[vdvROOM,POWER_ON] = (GET_LAST(btnSystemPower) == 1)
     }
 }
 
@@ -103,7 +120,15 @@ BUTTON_EVENT[dvTP1_SWT,btnSources]
     }
 }
 
-CHANNEL_EVENT[vdvROOM,255]
+BUTTON_EVENT[dvTP1_TPORT,btnAppleTV]
+{
+    PUSH:
+    {
+	TO[dvIR1,BUTTON.INPUT.CHANNEL]
+    }
+}
+
+CHANNEL_EVENT[vdvROOM,POWER_FB]
 {
     ON:
     {
@@ -121,6 +146,6 @@ CHANNEL_EVENT[dvIO,1]	// Fire Alarm
 {
     OFF:
     {
-	OFF[vdvROOM,255]
+	OFF[vdvROOM,POWER_ON]
     }
 }
