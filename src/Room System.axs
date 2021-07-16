@@ -18,9 +18,9 @@ dvCONSOLE = 0:1:0	// Master Controller
 (***********************************************************)
 DEFINE_START
 
-SEND_STRING dvCONSOLE, 'RoomSystem: Entered DEFINE_START'
+SEND_STRING dvCONSOLE, 'Room System: Entered DEFINE_START'
 
-SEND_STRING dvCONSOLE, 'RoomSystem: Leaving DEFINE_START'
+SEND_STRING dvCONSOLE, 'Room System: Leaving DEFINE_START'
 
 (***********************************************************)
 (*                  THE EVENTS GO BELOW                    *)
