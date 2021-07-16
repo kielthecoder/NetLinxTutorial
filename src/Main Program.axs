@@ -21,6 +21,7 @@ dvTP1_SWT   = 10001:2:0	 // Switcher controls
 dvTP1_TPORT = 10001:3:0	 // Transport controls
 
 vdvROOM = 33001:1:0
+vdvSWT  = 33002:1:0
 
 (***********************************************************)
 (*               CONSTANT DEFINITIONS GO BELOW             *)
@@ -58,7 +59,8 @@ INTEGER btnAppleTV[] = {
 (***********************************************************)
 (*                MODULE DEFINITIONS GO BELOW              *)
 (***********************************************************)
-DEFINE_MODULE 'RoomSystem' mRoomSystem
+DEFINE_MODULE 'Room System' mRoomSystem (vdvROOM,dvTP1)
+DEFINE_MODULE 'Simple Switcher' mSwitcher (vdvSWT,dvCOM1)
 
 (***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
@@ -109,23 +111,7 @@ BUTTON_EVENT[dvTP1_SWT,btnSources]
 {
     PUSH:
     {
-	INTEGER i, n
-	
-	n = GET_LAST(btnSources)
-	
-	FOR (i = 1; i <= 8; i++)
-	{
-	    [dvTP1_SWT,i] = (i == n)
-	}
-	
-	IF (n == 5) // AppleTV input
-	{
-	    SEND_COMMAND dvTP1,'^SHO-3,1'
-	}
-	ELSE
-	{
-	    SEND_COMMAND dvTP1,'^SHO-3,0'
-	}
+	SEND_LEVEL vdvSWT,1,GET_LAST(btnSources)
     }
 }
 
@@ -137,17 +123,30 @@ BUTTON_EVENT[dvTP1_TPORT,btnAppleTV]
     }
 }
 
+LEVEL_EVENT[vdvSWT,1]
+{
+    INTEGER i
+    
+    FOR (i = 1; i <= 8; i++)
+    {
+	[dvTP1_SWT,i] = (i == LEVEL.VALUE)
+    }
+    
+    IF (LEVEL.VALUE == 5)
+    {
+	SEND_COMMAND dvTP1,'^SHO-3,1'
+    }
+    ELSE
+    {
+	SEND_COMMAND dvTP1,'^SHO-3,0'
+    }
+}
+
 CHANNEL_EVENT[vdvROOM,POWER_FB]
 {
-    ON:
-    {
-	SEND_COMMAND dvTP1,'@PPK-Start System'
-	SEND_COMMAND dvTP1,'@PPN-Source Selection'
-    }
     OFF:
     {
-	SEND_COMMAND dvTP1,'@PPK-Source Selection'
-	SEND_COMMAND dvTP1,'@PPN-Start System'
+	SEND_LEVEL vdvSWT,1,0
     }
 }
 

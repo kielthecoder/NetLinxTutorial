@@ -152,6 +152,14 @@
 <FilePathName>Main Program.axs</FilePathName>
 <Comments></Comments>
 </File>
+<File CompileType="Netlinx" Type="Module"><Identifier>RoomSystem</Identifier>
+<FilePathName>RoomSystem.axs</FilePathName>
+<Comments></Comments>
+</File>
+<File CompileType="Netlinx" Type="Module"><Identifier>Simple Switcher</Identifier>
+<FilePathName>Simple Switcher.axs</FilePathName>
+<Comments></Comments>
+</File>
 </System>
 </Project>
 </Workspace>
