@@ -56,12 +56,21 @@ INTEGER btnAppleTV[] = {
     }
 
 (***********************************************************)
+(*                MODULE DEFINITIONS GO BELOW              *)
+(***********************************************************)
+DEFINE_MODULE 'RoomSystem' mRoomSystem
+
+(***********************************************************)
 (*                 STARTUP CODE GOES BELOW                 *)
 (***********************************************************)
 DEFINE_START
 
+SEND_STRING dvCONSOLE, 'Main Program: Entered DEFINE_START'
+
 TIMELINE_CREATE(TL_LOOP, lLoopTimes, LENGTH_ARRAY(lLoopTimes),
     TIMELINE_RELATIVE, TIMELINE_REPEAT);
+
+SEND_STRING dvCONSOLE, 'Main Program: Leaving DEFINE_START'
 
 (***********************************************************)
 (*                  THE EVENTS GO BELOW                    *)

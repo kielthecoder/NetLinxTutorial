@@ -142,6 +142,12 @@
 <DeviceMap DevAddr="dvIR1"><DevName>dvIR1</DevName>
 </DeviceMap>
 </File>
+<File CompileType="Netlinx" Type="TP4"><Identifier>Getting Started_MVP-9000i</Identifier>
+<FilePathName>Getting Started_MVP-9000i.TP4</FilePathName>
+<Comments></Comments>
+<DeviceMap DevAddr="dvTP1"><DevName>dvTP1</DevName>
+</DeviceMap>
+</File>
 <File CompileType="Netlinx" Type="MasterSrc"><Identifier>Main Program</Identifier>
 <FilePathName>Main Program.axs</FilePathName>
 <Comments></Comments>
