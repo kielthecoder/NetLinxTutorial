@@ -12,8 +12,7 @@ dvCONSOLE = 0:1:0	// Master Controller
 (***********************************************************)
 DEFINE_CONSTANT
 
-TL_STARTUP  = 1
-TL_SHUTDOWN = 2
+TL_WAIT = 1
 
 (***********************************************************)
 (*                  INCLUDE FILES GO BELOW                 *)
@@ -69,7 +68,7 @@ CHANNEL_EVENT[vdvROOM,POWER_FB]
 	SEND_COMMAND dvTP,'^TXT-1,0,System is starting up...'
 	SEND_LEVEL dvTP,2,0
 	
-	TIMELINE_CREATE(TL_STARTUP, lWaitTimes, LENGTH_ARRAY(lWaitTimes),
+	TIMELINE_CREATE(TL_WAIT, lWaitTimes, LENGTH_ARRAY(lWaitTimes),
 	    TIMELINE_RELATIVE, TIMELINE_ONCE)
     }
     OFF:
@@ -79,12 +78,12 @@ CHANNEL_EVENT[vdvROOM,POWER_FB]
 	SEND_COMMAND dvTP,'^TXT-1,0,System is shutting down...'
 	SEND_LEVEL dvTP,2,0
 	
-	TIMELINE_CREATE(TL_SHUTDOWN, lWaitTimes, LENGTH_ARRAY(lWaitTimes),
+	TIMELINE_CREATE(TL_WAIT, lWaitTimes, LENGTH_ARRAY(lWaitTimes),
 	    TIMELINE_RELATIVE, TIMELINE_ONCE)
     }
 }
 
-TIMELINE_EVENT[TL_STARTUP]
+TIMELINE_EVENT[TL_WAIT]
 {
     SEND_LEVEL dvTP,2,TIMELINE.SEQUENCE
     
@@ -98,27 +97,15 @@ TIMELINE_EVENT[TL_STARTUP]
 	{
 	    SEND_COMMAND dvTP,'PAGE-Main'
 	    SEND_COMMAND dvTP,'@PPX'
-	    SEND_COMMAND dvTP,'@PPN-Source Selection'
+	    
+	    IF ([vdvROOM,POWER_FB])
+	    {
+		SEND_COMMAND dvTP,'@PPN-Source Selection'
+	    }
+	    ELSE
+	    {
+		SEND_COMMAND dvTP,'@PPN-Start System'
+	    }
 	}
     }
 }
-
-TIMELINE_EVENT[TL_SHUTDOWN]
-{
-    SEND_LEVEL dvTP,2,TIMELINE.SEQUENCE
-    
-    SWITCH (TIMELINE.SEQUENCE)
-    {
-	CASE 5:
-	{
-	    SEND_COMMAND dvTP,'^ANI-2,1,12,10'
-	}
-	CASE 10:
-	{
-	    SEND_COMMAND dvTP,'PAGE-Main'
-	    SEND_COMMAND dvTP,'@PPX'
-	    SEND_COMMAND dvTP,'@PPN-Start System'
-	}
-    }
-}
-
